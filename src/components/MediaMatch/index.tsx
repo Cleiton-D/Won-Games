@@ -8,7 +8,7 @@ export type MediaMathProps = {
   greatherThan?: breakpoint;
 };
 
-const MediaMath: React.FC<MediaMathProps> = ({
+const MediaMatch: React.FC<MediaMathProps> = ({
   children,
   lessThan,
   greatherThan
@@ -51,4 +51,4 @@ const MediaMath: React.FC<MediaMathProps> = ({
   return <>{show && children}</>;
 };
 
-export default MediaMath;
+export default MediaMatch;
