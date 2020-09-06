@@ -1,12 +1,11 @@
 import { render, screen } from '@testing-library/react';
-import 'jest-styled-components';
 import MatchMediaMock from 'jest-matchmedia-mock';
 
 import MediaMatch from '.';
 
 describe('<MediaMatch />', () => {
-  let desktopHeading: Element | undefined;
-  let mobileHeading: Element | undefined;
+  let desktopHeading: Element | null;
+  let mobileHeading: Element | null;
   let matchMedia: MatchMediaMock;
 
   function renderItems() {
@@ -21,16 +20,8 @@ describe('<MediaMatch />', () => {
       </>
     );
 
-    try {
-      desktopHeading = screen.getByTestId('desktop');
-    } catch {
-      desktopHeading = undefined;
-    }
-    try {
-      mobileHeading = screen.getByTestId('mobile');
-    } catch {
-      mobileHeading = undefined;
-    }
+    desktopHeading = screen.queryByTestId('desktop');
+    mobileHeading = screen.queryByTestId('mobile');
   }
 
   beforeAll(() => {
@@ -38,8 +29,8 @@ describe('<MediaMatch />', () => {
   });
 
   beforeEach(() => {
-    desktopHeading = undefined;
-    mobileHeading = undefined;
+    desktopHeading = null;
+    mobileHeading = null;
   });
 
   afterEach(() => {
@@ -49,23 +40,23 @@ describe('<MediaMatch />', () => {
   it('should be hidden if no media query is passed', () => {
     renderItems();
 
-    expect(desktopHeading).toBeUndefined();
-    expect(mobileHeading).toBeUndefined();
+    expect(desktopHeading).not.toBeInTheDocument();
+    expect(mobileHeading).not.toBeInTheDocument();
   });
 
   it('should show mobile and hide desktop with max-width: 768px', () => {
     matchMedia.useMediaQuery('(max-width: 768px)');
     renderItems();
 
-    expect(mobileHeading).toBeDefined();
-    expect(desktopHeading).toBeUndefined();
+    expect(mobileHeading).toBeInTheDocument();
+    expect(desktopHeading).not.toBeInTheDocument();
   });
 
   it('should show desktop and hide mobile with min-width: 768px', () => {
     matchMedia.useMediaQuery('(min-width: 768px)');
     renderItems();
 
-    expect(desktopHeading).toBeDefined();
-    expect(mobileHeading).toBeUndefined();
+    expect(desktopHeading).toBeInTheDocument();
+    expect(mobileHeading).not.toBeInTheDocument();
   });
 });
