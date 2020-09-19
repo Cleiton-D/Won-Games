@@ -1,13 +1,17 @@
+import { AnchorHTMLAttributes, ButtonHTMLAttributes } from 'react';
 import { StyledIconProps } from '@styled-icons/styled-icon';
 import * as S from './styles';
 
+type ButtonTypes =
+  | AnchorHTMLAttributes<HTMLAnchorElement>
+  | ButtonHTMLAttributes<HTMLButtonElement>;
+
 export type ButtonProps = {
-  children?: React.ReactNode;
   size?: 'small' | 'medium' | 'large';
   fullWidth?: boolean;
   icon?: React.ComponentType<StyledIconProps>;
-  onClick?: () => (event: React.MouseEvent<HTMLButtonElement>) => void;
-};
+  as?: React.ElementType;
+} & ButtonTypes;
 
 const Button: React.FC<ButtonProps> = ({
   children,
