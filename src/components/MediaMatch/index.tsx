@@ -30,7 +30,7 @@ const MediaMatch: React.FC<MediaMathProps> = ({
 
         const media = window.matchMedia(query);
         handleMedia.call(media);
-        media.addListener(handleMedia);
+        media.addEventListener('change', handleMedia);
 
         return media;
       }
@@ -43,8 +43,9 @@ const MediaMatch: React.FC<MediaMathProps> = ({
     const lessMedia = createMedia('max-width', lessThan);
 
     return () => {
-      if (greatherMedia) greatherMedia.removeListener(handleMedia);
-      if (lessMedia) lessMedia.removeListener(handleMedia);
+      if (greatherMedia)
+        greatherMedia.removeEventListener('change', handleMedia);
+      if (lessMedia) lessMedia.removeEventListener('change', handleMedia);
     };
   }, [greatherThan, lessThan, createMedia, handleMedia]);
 
