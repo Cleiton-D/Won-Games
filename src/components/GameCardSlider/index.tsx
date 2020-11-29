@@ -51,7 +51,7 @@ const settings: SliderSettings = {
 
 const GameCardSlider: React.FC<GameCardSliderProps> = ({
   items,
-  color = 'black'
+  color = 'white'
 }) => (
   <S.Wrapper color={color}>
     <Slider settings={settings}>
