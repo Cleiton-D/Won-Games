@@ -96,7 +96,7 @@ export const MenuFull = styled.nav<MenuFullProps>`
     right: 0;
     height: 100vh;
     overflow: hidden;
-    transition: opacity 0.3s ease-in-out;
+    transition: opacity ${theme.transition.default};
     opacity: ${isOpen ? 1 : 0};
     pointer-events: ${isOpen ? 'all' : 'none'};
     z-index: ${theme.layers.menu};
@@ -128,7 +128,7 @@ export const MenuFull = styled.nav<MenuFullProps>`
 
     ${MenuLink}, ${RegisterBox} {
       transform: ${isOpen ? 'translateY(0)' : 'translateY(3rem)'};
-      transition: transform 0.3s ease-in-out;
+      transition: transform ${theme.transition.default};
     }
   `}
 `;
