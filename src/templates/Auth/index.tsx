@@ -14,7 +14,7 @@ const Auth = ({ title, children }: AuthProps) => (
     <MediaMatch greatherThan="medium">
       <S.BannerBlock>
         <S.BannerContent>
-          <Logo />
+          <Logo id="banner" />
 
           <div>
             <Heading>All your favorite games in one place</Heading>
@@ -30,7 +30,7 @@ const Auth = ({ title, children }: AuthProps) => (
 
     <S.Content>
       <S.ContentWrapper>
-        <Logo color="black" size="large" />
+        <Logo color="black" size="large" id="content" />
 
         <Heading color="black" lineColor="secondary" lineLeft>
           {title}
