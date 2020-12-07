@@ -23,6 +23,7 @@ describe('<Form />', () => {
       }
 
       .c1 {
+        display: block;
         font-size: 1.4rem;
         color: #030517;
         text-align: center;

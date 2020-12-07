@@ -1,12 +1,15 @@
 import styled, { css } from 'styled-components';
 import media from 'styled-media-query';
 
+import * as ButtonStyles from 'components/Button/styles';
+
 export const Wrapper = styled.menu`
   ${({ theme }) => css`
     display: flex;
     align-items: center;
     padding: ${theme.spacings.small} 0;
     position: relative;
+    z-index: ${theme.layers.menu};
   `}
 `;
 
@@ -34,7 +37,8 @@ export const MenuGroup = styled.div`
     align-items: center;
     justify-content: flex-end;
 
-    > div {
+    > div,
+    ${ButtonStyles.Wrapper} {
       margin-left: ${theme.spacings.xsmall};
     }
   `}

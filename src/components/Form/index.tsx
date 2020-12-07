@@ -18,6 +18,7 @@ export const FormWrapper = styled.div`
 
 export const FormLink = styled.span`
   ${({ theme }) => css`
+    display: block;
     font-size: ${theme.font.sizes.small};
     color: ${theme.colors.black};
     text-align: center;
