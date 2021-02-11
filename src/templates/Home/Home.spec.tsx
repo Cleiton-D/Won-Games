@@ -21,35 +21,33 @@ const props = {
   freeHighlight: highlightMock
 };
 
+jest.mock('components/Showcase', () => {
+  return {
+    __esModule: true,
+    default: function Mock() {
+      return <div data-testid="Mock showcase"></div>;
+    }
+  };
+});
+
+jest.mock('components/BannerSlider', () => {
+  return {
+    __esModule: true,
+    default: function Mock() {
+      return <div data-testid="Mock bannerslider"></div>;
+    }
+  };
+});
+
 describe('<Home />', () => {
   beforeAll(() => {
     matchMedia.useMediaQuery('(max-width: 768px)');
   });
 
-  it('should render menu and footer', () => {
+  it('should render banner and showcase', () => {
     renderWithTheme(<Home {...props} />);
 
-    expect(screen.getByLabelText(/open menu/i)).toBeInTheDocument();
-    expect(
-      screen.getByRole('heading', { name: /follow us/i })
-    ).toBeInTheDocument();
-    expect(screen.getAllByRole('img', { name: /won games/i })).toHaveLength(2);
-
-    expect(screen.getByRole('heading', { name: /news/i })).toBeInTheDocument();
-    expect(
-      screen.getByRole('heading', { name: /most popular/i })
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole('heading', { name: /upcomming/i })
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole('heading', { name: /free games/i })
-    ).toBeInTheDocument();
-
-    expect(screen.getAllByText(/defy death 1/i)).toHaveLength(1);
-
-    expect(screen.getAllByText(/population zero/i)).toHaveLength(5);
-
-    expect(screen.getAllByText(/read dead is back!/i)).toHaveLength(3);
+    expect(screen.getByTestId(/mock bannerslider/i)).toBeInTheDocument();
+    expect(screen.getAllByTestId(/mock showcase/i)).toHaveLength(5);
   });
 });
