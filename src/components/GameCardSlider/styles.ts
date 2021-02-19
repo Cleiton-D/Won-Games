@@ -60,5 +60,9 @@ export const Wrapper = styled.section<WrapperProps>`
     .slick-next.slick-disabled {
       visibility: hidden;
     }
+
+    ${media.lessThan('huge')`
+      overflow-x: hidden;
+    `}
   `}
 `;
