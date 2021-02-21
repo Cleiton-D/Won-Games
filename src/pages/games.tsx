@@ -26,6 +26,7 @@ export async function getStaticProps() {
       filterItems: filterItemsMock,
       games: data.games.map((game) => ({
         title: game.name,
+        slug: game.slug,
         developer: game.developers[0].name,
         image: `http://127.0.0.1:1337${game.cover!.url}`,
         price: new Intl.NumberFormat('en', {
