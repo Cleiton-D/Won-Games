@@ -25,8 +25,8 @@ jest.mock('templates/Base', () => ({
 
 jest.mock('components/Showcase', () => ({
   __esModule: true,
-  default: function Mock() {
-    return <div data-testid="Mock Showcase" />;
+  default: function Mock({ title }: { title?: string }) {
+    return <div data-testid="Mock Showcase">{title}</div>;
   }
 }));
 
@@ -66,8 +66,14 @@ describe('<Cart />', () => {
   });
 
   it('should render empty section if there are no items', () => {
-    renderWithTheme(<Cart {...props} items={[]} />);
+    renderWithTheme(<Cart {...props} items={undefined} />);
 
     expect(screen.getByTestId('Mock Empty')).toBeInTheDocument();
+  });
+
+  it('should render recommendedTitle', () => {
+    renderWithTheme(<Cart {...props} recommendedTitle="Recommended games" />);
+
+    expect(screen.getByText('Recommended games')).toBeInTheDocument();
   });
 });
