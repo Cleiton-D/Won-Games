@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import { GetStaticProps } from 'next';
 
 import { initializeApollo } from 'utils/apollo';
-import { gamesMapper } from 'utils/mappers';
+import { gamesMapper, highlightMapper } from 'utils/mappers';
 import { QueryGames, QueryGamesVariables } from 'graphql/generated/QueryGames';
 import { QUERY_GAMES, QUERY_GAME_BY_SLUG } from 'graphql/queries/games';
 import { QUERY_RECOMMENDED } from 'graphql/queries/recommended';
@@ -14,8 +14,11 @@ import { QueryRecommended } from 'graphql/generated/QueryRecommended';
 
 import Game, { GameTemplateProps } from 'templates/Game';
 
-import gamesMock from 'components/GameCardSlider/mock';
-import highlightMock from 'components/Highlight/mock';
+import {
+  QueryUpcoming,
+  QueryUpcomingVariables
+} from 'graphql/generated/QueryUpcoming';
+import { QUERY_UPCOMING } from 'graphql/queries/upcoming';
 
 const apolloClient = initializeApollo();
 
@@ -64,6 +67,18 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     query: QUERY_RECOMMENDED
   });
 
+  // GET UPCOMING GAMES AND HIGHLIGHT
+  const currentDate = new Date().toISOString().slice(0, 10);
+  const { data: upcoming } = await apolloClient.query<
+    QueryUpcoming,
+    QueryUpcomingVariables
+  >({
+    query: QUERY_UPCOMING,
+    variables: {
+      date: currentDate
+    }
+  });
+
   return {
     props: {
       revalidate: 60,
@@ -86,8 +101,11 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         rating: game.rating,
         genres: game.categories.map((category) => category.name)
       },
-      upcomingGames: gamesMock,
-      upcomingHighlight: highlightMock,
+      upcomingTitle: upcoming.showcase?.upcomingGames?.title || null,
+      upcomingGames: gamesMapper(upcoming.upcomingGames),
+      upcomingHighlight: highlightMapper(
+        upcoming.showcase?.upcomingGames?.highlight
+      ),
       recommendedTitle: recommended?.section?.title || null,
       recommendedGames: gamesMapper(recommended?.section?.games)
     }
