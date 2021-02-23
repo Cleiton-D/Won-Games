@@ -1,6 +1,8 @@
 import { useCallback } from 'react';
 import { KeyboardArrowDown as ArrowDown } from '@styled-icons/material-outlined';
 
+import { useQueryGames } from 'graphql/queries/games';
+
 import Base from 'templates/Base';
 
 import GameCard, { GameCardProps } from 'components/GameCard';
@@ -14,32 +16,47 @@ export type GamesProps = {
   filterItems: ItemProps[];
 };
 
-const Games = ({ games = [], filterItems }: GamesProps) => {
+const Games = ({ filterItems }: GamesProps) => {
+  const { data, loading, fetchMore } = useQueryGames({
+    variables: { limit: 15 }
+  });
+
   const handleFilter = useCallback(() => {
     return;
   }, []);
 
   const handleShowMore = useCallback(() => {
-    return;
-  }, []);
+    fetchMore({ variables: { limit: 15, start: data?.games.length } });
+  }, [fetchMore, data]);
 
   return (
     <Base>
       <S.Main>
         <ExploreSidebar items={filterItems} onFilter={handleFilter} />
 
-        <section>
-          <Grid>
-            {games.map((game) => (
-              <GameCard key={game.title} {...game} />
-            ))}
-          </Grid>
+        {loading ? (
+          <p>Loading...</p>
+        ) : (
+          <section>
+            <Grid>
+              {data?.games.map((game) => (
+                <GameCard
+                  key={game.name}
+                  title={game.name}
+                  slug={game.slug}
+                  developer={game.developers[0].name}
+                  image={`http://127.0.0.1:1337${game.cover!.url}`}
+                  price={game.price}
+                />
+              ))}
+            </Grid>
 
-          <S.ShowMore role="button" onClick={handleShowMore}>
-            <span>Show More</span>
-            <ArrowDown size={35} />
-          </S.ShowMore>
-        </section>
+            <S.ShowMore role="button" onClick={handleShowMore}>
+              <span>Show More</span>
+              <ArrowDown size={35} />
+            </S.ShowMore>
+          </section>
+        )}
       </S.Main>
     </Base>
   );
