@@ -1,18 +1,20 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Close, FilterList } from '@styled-icons/material-outlined';
+import { ParsedUrlQueryInput } from 'querystring';
+import xor from 'lodash.xor';
 
 import Heading from 'components/Heading';
 import Checkbox from 'components/Checkbox';
 import Radio from 'components/Radio';
 import Button from 'components/Button';
+import MediaMatch from 'components/MediaMatch';
 
 import * as S from './styles';
-import MediaMatch from 'components/MediaMatch';
 
 export type ItemProps = {
   title: string;
   name: string;
-  type: 'checkbox' | 'radio';
+  type: 'checkbox' | 'radio' | string;
   fields: Field[];
 };
 
@@ -21,9 +23,7 @@ type Field = {
   name: string;
 };
 
-type Values = {
-  [key: string]: boolean | string;
-};
+type Values = ParsedUrlQueryInput;
 
 export type ExploreSideBarProps = {
   items: ItemProps[];
@@ -39,13 +39,28 @@ const ExploreSidebar = ({
   const [values, setValues] = useState(initialValues);
   const [isOpen, setIsOpen] = useState(false);
 
-  const handleFilter = useCallback(() => {
+  useEffect(() => {
     onFilter(values);
-    setIsOpen(false);
-  }, [values, onFilter]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [values]);
 
-  const handleChange = useCallback((name: string, value: boolean | string) => {
-    setValues((currentValues) => ({ ...currentValues, [name]: value }));
+  const handleFilterMenu = useCallback(() => {
+    setIsOpen(false);
+  }, []);
+
+  const handleRadioChange = useCallback(
+    (name: string, value: boolean | string) => {
+      setValues((currentValues) => ({ ...currentValues, [name]: value }));
+    },
+    []
+  );
+
+  const handleCheckboxChange = useCallback((name: string, value: string) => {
+    setValues((currentValues) => {
+      const currentList = (currentValues[name] as []) || [];
+
+      return { ...currentValues, [name]: xor(currentList, [value]) };
+    });
   }, []);
 
   return (
@@ -84,8 +99,10 @@ const ExploreSidebar = ({
                   name={field.name}
                   label={field.label}
                   labelFor={field.name}
-                  isChecked={!!values[field.name]}
-                  onCheck={(value) => handleChange(field.name, value)}
+                  isChecked={(values[item.name] as string[])?.includes(
+                    field.name
+                  )}
+                  onCheck={() => handleCheckboxChange(item.name, field.name)}
                 />
               ))}
             {item.type === 'radio' &&
@@ -97,19 +114,23 @@ const ExploreSidebar = ({
                   id={field.name}
                   labelFor={field.name}
                   value={field.name}
-                  defaultChecked={field.name === values[item.name]}
-                  onChange={() => handleChange(item.name, field.name)}
+                  defaultChecked={
+                    String(field.name) === String(values[item.name])
+                  }
+                  onChange={() => handleRadioChange(item.name, field.name)}
                 />
               ))}
           </S.Items>
         ))}
       </S.Content>
 
-      <S.Footer>
-        <Button fullWidth size="medium" onClick={handleFilter}>
-          Filter
-        </Button>
-      </S.Footer>
+      <MediaMatch lessThan="medium">
+        <S.Footer>
+          <Button fullWidth size="medium" onClick={handleFilterMenu}>
+            Filter
+          </Button>
+        </S.Footer>
+      </MediaMatch>
     </S.Wrapper>
   );
 };

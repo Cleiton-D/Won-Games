@@ -14,20 +14,26 @@ export const Main = styled(Container)`
 `;
 
 export const ShowMore = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 10rem;
+`;
+
+export const ShowMoreButton = styled.div`
   ${({ theme }) => css`
-    color: ${theme.colors.white};
     text-align: center;
-    padding: ${theme.spacings.medium};
     text-transform: uppercase;
     font-weight: bold;
+    color: ${theme.colors.white};
     cursor: pointer;
 
-    > span {
-      display: block;
-    }
-
     > svg {
-      color: ${theme.colors.primary};
+      color ${theme.colors.primary};
     }
   `}
+`;
+
+export const ShowMoreLoading = styled.img`
+  width: 4rem;
 `;
