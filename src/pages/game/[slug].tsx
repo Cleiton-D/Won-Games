@@ -51,11 +51,15 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     QueryGameBySlugVariables
   >({
     query: QUERY_GAME_BY_SLUG,
-    variables: { slug: `${params?.slug}` }
+    variables: { slug: `${params?.slug}` },
+    fetchPolicy: 'no-cache'
   });
 
   if (!data.games.length) {
-    return { notFound: true, props: {} };
+    return {
+      notFound: true,
+      props: {}
+    };
   }
 
   const game = data.games[0];
@@ -80,8 +84,8 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   });
 
   return {
+    revalidate: 60,
     props: {
-      revalidate: 60,
       cover: `http://localhost:1337${game.cover?.src}`,
       gameInfo: {
         title: game.name,

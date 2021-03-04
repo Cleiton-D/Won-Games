@@ -16,6 +16,13 @@ import { fetchMoreMock, gamesMock, noGamesmock } from './mocks';
 const useRouter = jest.spyOn(require('next/router'), 'useRouter');
 const push = jest.fn();
 
+jest.mock('next/link', () => ({
+  __esModule: true,
+  default: function Mock({ children }: { children: React.ReactNode }) {
+    return <div>{children}</div>;
+  }
+}));
+
 useRouter.mockImplementation(() => ({
   push,
   query: '',
