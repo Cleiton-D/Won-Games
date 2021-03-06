@@ -1,45 +1,44 @@
-import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Email } from '@styled-icons/material-outlined/Email';
 
-import { renderWithTheme } from 'utils/tests/helpers';
+import { render, screen, waitFor } from 'utils/test-utils';
 
 import TextField from '.';
 
 describe('<TextField />', () => {
   it('Renders with Label', () => {
-    renderWithTheme(<TextField label="Label" name="Field" />);
+    render(<TextField label="Label" name="Field" />);
 
     expect(screen.getByLabelText('Label')).toBeInTheDocument();
   });
 
   it('Renders without Label', () => {
-    renderWithTheme(<TextField />);
+    render(<TextField />);
 
     expect(screen.queryByLabelText('Label')).not.toBeInTheDocument();
   });
 
   it('Renders without placeholder', () => {
-    renderWithTheme(<TextField placeholder="Placeholder" />);
+    render(<TextField placeholder="Placeholder" />);
 
     expect(screen.getByPlaceholderText('Placeholder')).toBeInTheDocument();
   });
 
   it('Renders with Icon', () => {
-    renderWithTheme(<TextField icon={Email} />);
+    render(<TextField icon={Email} />);
 
     expect(screen.getByTestId('icon')).toBeInTheDocument();
   });
 
   it('Renders with Icon on the right side', () => {
-    renderWithTheme(<TextField icon={Email} iconPosition="right" />);
+    render(<TextField icon={Email} iconPosition="right" />);
 
     expect(screen.getByTestId('icon').parentElement).toHaveStyle({ order: 1 });
   });
 
   it('Changes its value when typing', async () => {
     const onInput = jest.fn();
-    renderWithTheme(
+    render(
       <TextField label="Label" name="Field" id="Field" onInput={onInput} />
     );
 
@@ -57,9 +56,7 @@ describe('<TextField />', () => {
   it('Does not changes its value when disabled', async () => {
     const onInput = jest.fn();
 
-    renderWithTheme(
-      <TextField onInput={onInput} label="Label" name="Field" disabled />
-    );
+    render(<TextField onInput={onInput} label="Label" name="Field" disabled />);
 
     const input = screen.getByRole('textbox');
     expect(input).toBeDisabled();
@@ -74,13 +71,13 @@ describe('<TextField />', () => {
   });
 
   it('Renders with error', () => {
-    renderWithTheme(<TextField error="Error Message" />);
+    render(<TextField error="Error Message" />);
 
     expect(screen.getByText('Error Message')).toBeInTheDocument();
   });
 
   it('its accessible by tab', () => {
-    renderWithTheme(<TextField label="Label" name="Field" />);
+    render(<TextField label="Label" name="Field" />);
 
     const input = screen.getByLabelText('Label');
     expect(document.body).toHaveFocus();
@@ -90,7 +87,7 @@ describe('<TextField />', () => {
   });
 
   it('its not accessible by tab when disabled', () => {
-    renderWithTheme(<TextField label="Label" name="Field" disabled />);
+    render(<TextField label="Label" name="Field" disabled />);
 
     const input = screen.getByLabelText('Label');
     expect(document.body).toHaveFocus();

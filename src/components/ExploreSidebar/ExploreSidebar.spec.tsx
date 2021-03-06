@@ -1,7 +1,7 @@
-import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { renderWithTheme } from 'utils/tests/helpers';
 import matchMedia from '../../../.jest/match-media-mock';
+
+import { render, screen } from 'utils/test-utils';
 
 import ExploreSidebar from '.';
 
@@ -14,7 +14,7 @@ describe('<ExploreSidebar />', () => {
   });
 
   it('should render headings', () => {
-    renderWithTheme(<ExploreSidebar items={itemsMock} onFilter={jest.fn()} />);
+    render(<ExploreSidebar items={itemsMock} onFilter={jest.fn()} />);
 
     expect(screen.getByRole('heading', { name: /price/i })).toBeInTheDocument();
     expect(
@@ -27,7 +27,7 @@ describe('<ExploreSidebar />', () => {
   });
 
   it('should render inputs', () => {
-    renderWithTheme(<ExploreSidebar items={itemsMock} onFilter={jest.fn()} />);
+    render(<ExploreSidebar items={itemsMock} onFilter={jest.fn()} />);
     expect(
       screen.getByRole('checkbox', { name: /under \$50/i })
     ).toBeInTheDocument();
@@ -40,13 +40,13 @@ describe('<ExploreSidebar />', () => {
   it('should render the filter button', () => {
     matchMedia.useMediaQuery('(max-width: 768px)');
 
-    renderWithTheme(<ExploreSidebar items={itemsMock} onFilter={jest.fn()} />);
+    render(<ExploreSidebar items={itemsMock} onFilter={jest.fn()} />);
 
     expect(screen.getByRole('button', { name: /filter/i })).toBeInTheDocument();
   });
 
   it('should check initial values that are passed', () => {
-    renderWithTheme(
+    render(
       <ExploreSidebar
         items={itemsMock}
         initialValues={{
@@ -64,7 +64,7 @@ describe('<ExploreSidebar />', () => {
   it('should filter with initial values', () => {
     const onFilter = jest.fn();
 
-    renderWithTheme(
+    render(
       <ExploreSidebar
         items={itemsMock}
         initialValues={{
@@ -84,7 +84,7 @@ describe('<ExploreSidebar />', () => {
   it('should filter with checked values', () => {
     const onFilter = jest.fn();
 
-    renderWithTheme(<ExploreSidebar items={itemsMock} onFilter={onFilter} />);
+    render(<ExploreSidebar items={itemsMock} onFilter={onFilter} />);
 
     userEvent.click(screen.getByRole('checkbox', { name: /windows/i }));
     userEvent.click(screen.getByRole('checkbox', { name: /linux/i }));
@@ -101,7 +101,7 @@ describe('<ExploreSidebar />', () => {
   it('should altern between radio options', () => {
     const onFilter = jest.fn();
 
-    renderWithTheme(<ExploreSidebar items={itemsMock} onFilter={onFilter} />);
+    render(<ExploreSidebar items={itemsMock} onFilter={onFilter} />);
 
     userEvent.click(screen.getByRole('radio', { name: /low to high/i }));
     userEvent.click(screen.getByRole('radio', { name: /high to low/i }));
@@ -112,7 +112,7 @@ describe('<ExploreSidebar />', () => {
   it('should render open filters button on mobile', () => {
     matchMedia.useMediaQuery('(max-width: 768px)');
 
-    renderWithTheme(<ExploreSidebar items={itemsMock} onFilter={jest.fn()} />);
+    render(<ExploreSidebar items={itemsMock} onFilter={jest.fn()} />);
 
     expect(screen.getByLabelText(/open filters/i)).toBeInTheDocument();
   });
@@ -120,7 +120,7 @@ describe('<ExploreSidebar />', () => {
   it('should open filters on click in the open button', async () => {
     matchMedia.useMediaQuery('(max-width: 768px)');
 
-    renderWithTheme(<ExploreSidebar items={itemsMock} onFilter={jest.fn()} />);
+    render(<ExploreSidebar items={itemsMock} onFilter={jest.fn()} />);
 
     userEvent.click(screen.getByLabelText(/open filters/i));
 
@@ -152,7 +152,7 @@ describe('<ExploreSidebar />', () => {
   it('should close filters on click in the close button', async () => {
     matchMedia.useMediaQuery('(max-width: 768px)');
 
-    renderWithTheme(<ExploreSidebar items={itemsMock} onFilter={jest.fn()} />);
+    render(<ExploreSidebar items={itemsMock} onFilter={jest.fn()} />);
 
     userEvent.click(screen.getByLabelText(/open filters/i));
     userEvent.click(screen.getByLabelText(/close filters/i));
@@ -183,7 +183,7 @@ describe('<ExploreSidebar />', () => {
   it('should close filters on click in the filter button', async () => {
     matchMedia.useMediaQuery('(max-width: 768px)');
 
-    renderWithTheme(<ExploreSidebar items={itemsMock} onFilter={jest.fn()} />);
+    render(<ExploreSidebar items={itemsMock} onFilter={jest.fn()} />);
 
     userEvent.click(screen.getByLabelText(/open filters/i));
     userEvent.click(screen.getByRole('button', { name: /filter/i }));

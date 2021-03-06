@@ -1,5 +1,4 @@
-import { screen } from '@testing-library/react';
-import { renderWithTheme } from 'utils/tests/helpers';
+import { render, screen } from 'utils/test-utils';
 import matchMediaMock from '../../../.jest/match-media-mock';
 
 import Wishlist from '.';
@@ -27,7 +26,7 @@ describe('<Wishlist />', () => {
   });
 
   it('should render correctly', () => {
-    renderWithTheme(<Wishlist {...props} />);
+    render(<Wishlist {...props} />);
 
     expect(
       screen.getByRole('heading', { name: /wishlist/i })
@@ -39,7 +38,7 @@ describe('<Wishlist />', () => {
   });
 
   it('should render empty when there are no games', () => {
-    renderWithTheme(
+    render(
       <Wishlist
         recommendedGames={gamesMock}
         recommendedHighlight={highlightMock}

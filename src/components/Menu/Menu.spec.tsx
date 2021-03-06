@@ -1,8 +1,8 @@
-import { screen, fireEvent } from '@testing-library/react';
 import MatchMediaMock from 'jest-matchmedia-mock';
 
+import { render, screen, fireEvent } from 'utils/test-utils';
+
 import Menu from '.';
-import { renderWithTheme } from 'utils/tests/helpers';
 
 describe('<Menu />', () => {
   let matchMedia: MatchMediaMock;
@@ -14,7 +14,7 @@ describe('<Menu />', () => {
 
   it('should render the menu', () => {
     matchMedia.useMediaQuery('(max-width: 768px)');
-    renderWithTheme(<Menu />);
+    render(<Menu />);
 
     expect(screen.getByLabelText(/open menu/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/search/i)).toBeInTheDocument();
@@ -22,7 +22,7 @@ describe('<Menu />', () => {
   });
 
   it('should handle the open/close mobile menu', () => {
-    renderWithTheme(<Menu />);
+    render(<Menu />);
 
     // selecionar o nosso menuFull
     const fullMenuElement = screen.getByRole('navigation', { hidden: true });
@@ -42,7 +42,7 @@ describe('<Menu />', () => {
   });
 
   it('should show register box when logged out', () => {
-    renderWithTheme(<Menu />);
+    render(<Menu />);
 
     expect(screen.queryByText(/my profile/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/wishlist/i)).not.toBeInTheDocument();
@@ -52,7 +52,7 @@ describe('<Menu />', () => {
   });
 
   it('should show wishlist and profile when logged in', () => {
-    renderWithTheme(<Menu username="John Doe" />);
+    render(<Menu username="John Doe" />);
 
     expect(screen.getByText(/my profile/i)).toBeInTheDocument();
     expect(screen.getByText(/wishlist/i)).toBeInTheDocument();
