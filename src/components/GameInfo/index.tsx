@@ -1,23 +1,23 @@
 import { useMemo } from 'react';
-import {
-  AddShoppingCart,
-  FavoriteBorder
-} from '@styled-icons/material-outlined';
+import { FavoriteBorder } from '@styled-icons/material-outlined';
 
 import Button from 'components/Button';
 import Heading from 'components/Heading';
 import Ribbon from 'components/Ribbon';
+import CartButton from 'components/CartButton';
+
 import formatCurrency from 'utils/formatCurrency';
 
 import * as S from './styles';
 
 export type GameInfoProps = {
+  id: string;
   title: string;
   description: string;
   price: number;
 };
 
-const GameInfo = ({ title, description, price }: GameInfoProps) => {
+const GameInfo = ({ id, title, description, price }: GameInfoProps) => {
   const formattedPrice = useMemo(() => formatCurrency(price), [price]);
 
   return (
@@ -31,7 +31,8 @@ const GameInfo = ({ title, description, price }: GameInfoProps) => {
       <S.Description>{description}</S.Description>
 
       <S.ButtonsWrapper>
-        <Button icon={AddShoppingCart}>Add to cart</Button>
+        <CartButton id={id} size="large" hasText />
+
         <Button icon={FavoriteBorder} minimal>
           Wishlist
         </Button>

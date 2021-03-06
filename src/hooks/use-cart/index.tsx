@@ -17,7 +17,7 @@ const CART_KEY = 'cartItems';
 
 type CartItem = {
   id: string;
-  image?: string;
+  image: string;
   title: string;
   price: string;
 };

@@ -4,6 +4,7 @@ import GameCard from '.';
 import theme from 'styles/theme';
 
 const props = {
+  id: '1',
   title: 'Population Zero',
   slug: 'population-zero',
   developer: 'Rockstar Games',
