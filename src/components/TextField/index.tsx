@@ -4,7 +4,7 @@ import { StyledIconProps } from '@styled-icons/styled-icon';
 import * as S from './styles';
 
 export type TextFieldProps = {
-  onInput?: (value: string) => void;
+  onInputChange?: (value: string) => void;
   label?: string;
   initialValue?: string;
   icon?: React.ComponentType<StyledIconProps>;
@@ -21,7 +21,7 @@ const TextField = ({
   iconPosition = 'left',
   disabled = false,
   icon: Icon,
-  onInput,
+  onInputChange,
   ...rest
 }: TextFieldProps) => {
   const [value, setValue] = useState(initialValue);
@@ -31,9 +31,9 @@ const TextField = ({
       const newValue = event.target.value;
       setValue(newValue);
 
-      !!onInput && onInput(newValue);
+      !!onInputChange && onInputChange(newValue);
     },
-    [onInput]
+    [onInputChange]
   );
 
   return (
